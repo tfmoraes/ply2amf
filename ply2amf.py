@@ -13,13 +13,13 @@ class AMFWriter:
 
     def write(self, filename):
         root = ET.Element('amf')
-        for mesh in self.meshes:
-            self._add_object(root, mesh)
+        for n, mesh in enumerate(self.meshes):
+            self._add_object(root, mesh, _id=n+1)
         with open(filename, 'w', encoding='utf8') as f:
             f.write(ET.tostring(root, encoding='utf8').decode('utf8'))
 
-    def _add_object(self, parent, mesh):
-        object_node = ET.SubElement(parent, 'object', id="1")
+    def _add_object(self, parent, mesh, _id=1):
+        object_node = ET.SubElement(parent, 'object', id=str(_id))
         self._add_mesh(object_node, mesh)
 
     def _add_mesh(self, parent, mesh):
